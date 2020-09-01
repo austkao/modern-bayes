@@ -26,8 +26,6 @@ p(X \mid \theta) p(\theta) \\
 This implies that 
 $$\theta \mid X \sim \text{Beta}(x+a,n-x+b).$$
 
-
-
 ## Task 2
 
 Simulate some data using the \textsf{rbinom} function of size $n = 100$ and probability equal to 1\%. Remember to \textsf{set.seed(123)} so that you can replicate your results.
@@ -53,46 +51,153 @@ The likelihood function is given below. Since this is a probability and is only 
 You have a rough sketch of what you should do for this part of the assignment. Try this out in lab on your own. 
 
 ```{r, echo = TRUE}
+### Code taken from lab session
 ### Bernoulli LH Function ###
 # Input: obs.data, theta
 # Output: bernoulli likelihood
-
+bernoulli_likelihood <- function (obs.data, theta) {
+  n = length(obs.data)
+  x = sum(obs.data)
+  return (choose(n, x) * theta ^(x) * (1-theta) ^ (n-x))
+}
 
 ### Plot LH for a grid of theta values ###
 # Create the grid #
 # Store the LH values
 # Create the Plot
+theta = seq(0, 1, length.out = 1000)
+plot(theta, bernoulli_likelihood(obs.data, theta),
+     type = "l", ylab = "Likelihood", xlab = "Theta")
 ```
 
 ## Task 4
 
+Write a function that takes as its inputs  prior parameters \textsf{a} and \textsf{b} for the Beta-Bernoulli model and the observed data, and produces the posterior parameters you need for the model. \textbf{Generate and print} the posterior parameters for a non-informative prior i.e. \textsf{(a,b) = (1,1)} and for an informative case \textsf{(a,b) = (3,1)}}.
+
+```{r}
+### Based on code provided in lab session
+### Function for generating posterior parameters
+posterior_params <- function(a, b, obs.data) {
+  n = length(obs.data)
+  x = sum(obs.data)
+  new_a = x+a
+  new_b = n-x+b
+  return(c(new_a, new_b))
+}
+### Uninformative case
+posterior_params(1, 1, obs.data)
+### Informative case
+posterior_params(3, 1, obs.data)
+```
+
 ## Task 5
 
-
+Create two plots, one for the informative and one for the non-informative case to show the posterior distribution and superimpose the prior distributions on each along with the likelihood. What do you see? Remember to turn the y-axis ticks off since superimposing may make the scale non-sense.
+```{r}
+### Based on code provided in lab session
+### Generate theta
+theta = seq(0, 1, length.out = 1000)
+### Find parameters of posterior distributions
+informative_params = posterior_params(3, 1, obs.data)
+uninformative_params = posterior_params(1, 1, obs.data)
+### Plot the posterior (informative case)
+plot(theta, dbeta(theta, shape1 = informative_params[1], shape2 = informative_params[2]),
+     type = "l", xlab = "Theta", ylab = "Value", main = "Posterior Generated Using
+     Informative Prior")
+### Plot the prior (informative case)
+lines(theta, dbeta(theta, shape1 = 3, shape2 = 1), col = 2, lty = 2)
+### Plot the likelihood
+normalized_likelihood = 1000*bernoulli_likelihood(obs.data, theta)/
+        sum(bernoulli_likelihood(obs.data, theta))
+lines(theta, normalized_likelihood, col = 3, lty = 3)
+legend("topright", legend = c("Posterior", "Prior", "Likelihood"),
+       lty = c(1,2,3), col = c(1,2,3))
+### Plot the posterior (uninformative case)
+plot(theta, dbeta(theta, shape1 = uninformative_params[1], shape2 = uninformative_params[2]),
+     type = "l", xlab = "Theta", ylab = "Value", main = "Posterior Generated Using
+     Uninformative Prior")
+### Plot the prior (uninformative case)
+lines(theta, dbeta(theta, shape1 = 1, shape2 = 1), col = 2, lty = 2)
+legend("topright", legend = c("Posterior", "Prior", "Likelihood"),
+       lty = c(1,2,3), col = c(1,2,3))
+```
 
 # Exponential Gamma Model
 a.
 \begin{align*}
-p(x_{1:n}|\theta) &= \theta^n e^{-n\theta \sum_{i=1}^{n} x_i} I(x>0)\\
+p(x_{1:n}|\theta) &= \theta^n e^{-\theta \sum_{i=1}^{n} x_i} I(x>0)\\
 p(\theta|x_{1:n}) &= \frac{p(x_{1:n}|\theta)p(\theta)}{p(x)}\\
-p(\theta|x_{1:n}) &\propto \theta^n e^{(-n\theta \sum_{i=1}^{n} x_i)} \frac{b^a}{\Gamma(a)} \theta^{a-1} e^{-b\theta} I(x > 0)\\
-p(\theta|x_{1:n}) &\propto \theta^{n+a-1} e^{(-b\theta-n\theta \sum_{i=1}^{n} x_i)} I(x > 0)\\
-p(\theta|x_{1:n}) &\propto \theta^{n+a-1} e^{-(b+n \sum_{i=1}^{n} x_i) \theta} I(x > 0)\\
+p(\theta|x_{1:n}) &\propto \theta^n e^{(-\theta \sum_{i=1}^{n} x_i)} \frac{b^a}{\Gamma(a)} \theta^{a-1} e^{-b\theta} I(x > 0)\\
+p(\theta|x_{1:n}) &\propto \theta^{n+a-1} e^{(-b\theta-\theta \sum_{i=1}^{n} x_i)} I(x > 0)\\
+p(\theta|x_{1:n}) &\propto \theta^{n+a-1} e^{-(b+\sum_{i=1}^{n} x_i) \theta} I(x > 0)\\
 \end{align*}
-As can be seen above: $$p(\theta|x_{1:n}) \sim \text{Gamma}(\theta | n+a,b+n\sum_{i=1}^{n} x_i)$$
+As can be seen above: $$p(\theta|x_{1:n}) \sim \text{Gamma}(\theta | n+a,b+\sum_{i=1}^{n} x_i)$$
 
-b. The posterior distribution is a proper probability distribution function because the likelihood and prior functions are too.
+b. The posterior distribution is a proper probability distribution function because as a probability function, it must integrate to 1.
 
 c.
 ```{r}
+### Record data
 x <- c(20.9, 69.7, 3.6, 21.8, 21.4, 0.4, 6.7, 10.0)
+### Theta
+theta = seq(0, 1, length.out = 1000)
+n = length(x)
+x_sum = sum(x)
+a = 0.1
+b = 1
+plot(theta, dgamma(theta, shape = a, rate = b), type = "l", ylab = "Value", xlab = "Theta")
+lines(theta, dgamma(theta, shape = n + a, rate = x_sum+b), col = 2, lty = 2)
+legend("topright", legend = c("Prior", "Posterior"),
+       lty = c(1,2), col = c(1,2))
 ```
 
-d. An Exponential model would be reasonable when modeling the time it takes in between the arrival of .
+d. An Exponential model would be reasonable when, for example, modeling the time it takes for the next plane to arrive at an airport. An Exponential model would not be appropriate when, for example, modeling the time it takes for leaves to fall off of a tree because this is highly dependent on the time of year. There would need to be some sort of memory included in the system to make an effective model, but the Exponential model is memoryless.
 
 # Priors, Posteriors, Predictive Distributions
-a. A class of conjugate prior densities for $\theta$ are Gamma distributions.
-[Plot here]
-
+a. A class of conjugate prior densities for $\theta$ would have the kernel $\theta^{2b-1} e^{-\theta^2 c^2}$, so $\theta \sim \text{Galenshore}(b, c)$.
+```{r}
+### Plotting prior class
+theta = seq(0,1, length.out = 1000)
+galenshore <- function (b, c, theta) {
+  return (2/(factorial(b-1))* c^(2*b) * theta^(2*b-1) * exp(-theta^2 * c^2))
+}
+# As an example, choose b=2, c=3
+b = 2
+c = 3
+plot(theta, galenshore(b, c, theta), xlab = "Theta", ylab = "")
+# Another example, choose b=4, c=2
+b = 4
+c = 2
+plot(theta, galenshore(b, c, theta), xlab = "Theta", ylab = "")
+```
 b.
-
+\begin{align*}
+  p(y \mid \theta) &= \frac{2}{\Gamma(a)} \theta^{2a} y^{2a-1} e^{-\theta^2 y^2}\\
+  p(y_{1:n} \mid \theta) &= \left( \frac{2}{\Gamma(a)} \right)^n \theta^{2an} e^{(-\theta^2 \sum_{i=1}^n y_i^2)} \left( \prod_{i=1}^n y_i^{2a-1} \right)\\
+  p(\theta) &\propto \theta^{2b-1} e^{-\theta^2 c^2}\\
+  p(\theta \mid y_{1:n}) &\propto p(y_{1:n} \mid \theta) p(\theta)\\
+  p(\theta \mid y_{1:n}) &\propto \left( \frac{2}{\Gamma(a)} \right)^n \theta^{2an} e^{(-\theta^2 \sum_{i=1}^n y_i^2)} \left( \prod_{i=1}^n y_i^{2a-1} \right) \theta^{2b-1} e^{-\theta^2 c^2}\\
+  p(\theta \mid y_{1:n}) &\propto \theta^{2an} e^{(-\theta^2 \sum_{i=1}^n y_i^2)} \theta^{2b-1} e^{-\theta^2 c^2}\\
+  p(\theta \mid y_{1:n}) &\propto \theta^{2an+2b-1} e^{(-\theta^2 \sum_{i=1}^n y_i^2)-\theta^2 c^2}\\
+  p(\theta \mid y_{1:n}) &\propto \theta^{2(an+b)-1} e^{-\theta^2 \left( (\sum_{i=1}^n y_i^2) + c^2 \right)}
+\end{align*}
+We can see that $$p(\theta \mid y_{1:n}) \sim \text{Galenshore}\left(an+b, \sqrt{c^2 + \sum_{i=1}^n (y_i^2)} \right)$$
+c.
+\begin{align*}
+  \frac{p(\theta_a \mid y_{1:n})}{p(\theta_b \mid y_{1:n})} &= \frac{\frac{2}{\Gamma(an+b)}\left( (\sum_{i=1}^n y_i^2) + c^2 \right)^{(an+b)}\theta_a^{2(an+b)-1} e^{-\theta_a^2 \left( (\sum_{i=1}^n y_i^2) + c^2 \right)}}{\frac{2}{\Gamma(an+b)}\left( (\sum_{i=1}^n y_i^2) + c^2 \right)^{(an+b)}\theta_b^{2(an+b)-1} e^{-\theta_b^2 \left( (\sum_{i=1}^n y_i^2) + c^2 \right)}}\\
+  \frac{p(\theta_a \mid y_{1:n})}{p(\theta_b \mid y_{1:n})} &= \frac{\theta_a^{2(an+b)-1} e^{-\theta_a^2 \left( (\sum_{i=1}^n y_i^2) + c^2 \right)}}{\theta_b^{2(an+b)-1} e^{-\theta_b^2 \left( (\sum_{i=1}^n y_i^2) + c^2 \right)}}\\
+  \frac{p(\theta_a \mid y_{1:n})}{p(\theta_b \mid y_{1:n})} &= \frac{\theta_a}{\theta_b}^{2(an+b)-1} e^{(-\theta_a^2+\theta_b^2) \left( (\sum_{i=1}^n y_i^2) + c^2 \right)}
+\end{align*}
+The sufficient statistic is $\theta_b^2-\theta_a^2$.
+d. The expected value of a Galenshore distribution with parameters $a$ and $\theta$ is $\frac{\Gamma(a + \frac{1}{2})}{\theta \Gamma(a)}$. Because $p(\theta \mid y_{1:n})$ is a Galenshore distribution with parameters $an+b$ and $\sqrt{c^2 + \sum_{i=1}^n (y_i^2)}$, its expected value can be expressed as: $$E[\theta \mid y_{1:n}] = \frac{\Gamma(na + b + \frac{1}{2})}{\left( \sqrt{c^2 + \sum_{i=1}^n (y_i^2)} \right) \Gamma(an + b)}$$
+e.
+\begin{align*}
+p(y_{n+1} \mid y_{1:n}) &= \int p(y_{n+1} \mid \theta) p(\theta \mid y_{1:n}) d\theta\\
+p(y_{n+1} \mid y_{1:n}) &= \int \left[ \frac{2}{\Gamma(a)} \theta^{2a} y_{n+1}^{2a-1} e^{-\theta^2 y_{n+1}^2} \right] \left[ \frac{2}{\Gamma(an+b)} \left( \sqrt{c^2 + \sum_{i=1}^n (y_i^2)} \right)^{2(an+b)} \theta^{2(an+b)-1} e^{-\theta^2 \left( \sqrt{c^2 + \sum_{i=1}^n (y_i^2)} \right)^2} \right] d\theta\\
+p(y_{n+1} \mid y_{1:n}) &= \frac{4 y_{n+1}^{2a-1} \left( c^2 + \sum_{i=1}^n (y_i^2) \right)^{(an+b)}}{\Gamma(a) \Gamma(an+b)} \int \theta^{2a} e^{-\theta^2 y_{n+1}^2} \theta^{2(an+b)-1}e^{-\theta^2 \left( c^2 + \sum_{i=1}^n (y_i^2) \right)} d\theta\\
+p(y_{n+1} \mid y_{1:n}) &= \frac{4 y_{n+1}^{2a-1} \left( c^2 + \sum_{i=1}^n (y_i^2) \right)^{(an+b)}}{\Gamma(a) \Gamma(an+b)} \int \theta^{2(an+a+b)-1} e^{-\theta^2 \left(y_{n+1}^2 + c^2 + \sum_{i=1}^n (y_i^2) \right)} d\theta\\
+p(y_{n+1} \mid y_{1:n}) &= \frac{4 y_{n+1}^{2a-1} \left( c^2 + \sum_{i=1}^n (y_i^2) \right)^{(an+b)}}{\Gamma(a) \Gamma(an+b)} \int \theta^{2(an+a+b)-1} e^{-\theta^2 \left(y_{n+1}^2 + c^2 + \sum_{i=1}^n (y_i^2) \right)} d\theta \times\\
+ &\left[\frac{2}{\Gamma(an+a+b)} \sqrt{y_{n+1}^2 + c^2 + \sum_{i=1}^n (y_i^2)} ^ {2(an + a +b)} \right] \left[\frac{\Gamma(an+a+b)}{2} \frac{1}{\sqrt{y_{n+1}^2 + c^2 + \sum_{i=1}^n (y_i^2)} ^ {2(an + a +b)}} \right]\\
+ p(y_{n+1} \mid y_{1:n}) &= \frac{4 y_{n+1}^{2a-1} \left( c^2 + \sum_{i=1}^n (y_i^2) \right)^{(an+b)}}{\Gamma(a) \Gamma(an+b)} \left[\frac{\Gamma(an+a+b)}{2} \frac{1}{\left(y_{n+1}^2 + c^2 + \sum_{i=1}^n (y_i^2) \right) ^ {an + a +b}} \right]\\
+ p(y_{n+1} \mid y_{1:n}) &= \frac{2 y_{n+1}^{2a-1} \left( c^2 + \sum_{i=1}^n (y_i^2) \right)^{(an+b)}}{\Gamma(a) \Gamma(an+b)} \frac{\Gamma(an+a+b)}{\left(y_{n+1}^2 + c^2 + \sum_{i=1}^n (y_i^2) \right) ^ {an + a +b}}
+\end{align*}
