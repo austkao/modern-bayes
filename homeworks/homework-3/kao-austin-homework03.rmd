@@ -1,0 +1,54 @@
+
+---
+title: "Homework 3"
+author: "Austin Kao"
+output: pdf_document
+font-size: 8px
+---
+
+# The Uniform-Pareto
+\begin{align*}
+    p(x \mid \theta) &=  \frac{1}{\theta-0}I_{0, \theta}(x) = \frac{1}{\theta}I_{0, \theta}(x)\\
+    p(\theta \mid x) &\propto \left[ \frac{1}{\theta}I_{0, \theta}(x)\right]\left[ \frac{\alpha \beta^{\alpha}}{\theta^{\alpha + 1}} I_{\beta, \inf}(\theta) \right]\\
+    p(\theta \mid x) &\propto \frac{1}{\theta^{\alpha + 2}} I_{\beta, \inf}(\theta) I_{0, \theta}(x)\\
+    p(\theta \mid x) &\sim \text{Pareto}(\alpha +1, \text{max}(\beta, x))
+\end{align*}
+
+# The Bayes Estimator or Bayes Procedure
+a.
+\begin{align*}
+\rho(\delta(x), x) &= E[L(\theta, \delta(x)) \mid x]\\
+\rho(\delta(x), x) &= E[ c(\theta - \delta(x))^2\mid x]\\
+\rho(\delta(x), x) &= c E[ (\theta - \delta(x))^2\mid x]\\
+\rho(\delta(x), x) &= c\left\{ E[\theta^2 \mid x] + E[-2\theta \delta(x) \mid x] + E[\delta(x)^2\mid x] \right\}\\
+\rho(\delta(x), x) &= c\left\{ E[\theta^2 \mid x] -2\delta(x) E[\theta \mid x] + \delta(x)^2 \right\}\\
+\rho(\delta(x), x) &= cE[\theta^2 \mid x] -2c\delta(x) E[\theta \mid x] + c\delta(x)^2 \\
+\frac{\partial \rho(\delta(x), x)}{\partial \delta(x)} &= \frac{\partial \left\{ cE[\theta^2 \mid x] -2c\delta(x) E[\theta \mid x] + c\delta(x)^2 \right\}}{\partial \delta(x)} = 0\\
+\frac{\partial \left\{ cE[\theta^2 \mid x] -2c\delta(x) E[\theta \mid x] + c\delta(x)^2 \right\}}{\partial \delta(x)} &= -2cE[\theta \mid x] + 2c \delta(x) = 0\\
+2c \delta(x) &= 2cE[\theta \mid x]\\
+\delta(x) &= E[\theta \mid x]
+\end{align*}
+b.
+\begin{align*}
+\rho(\delta(x), x) &= E[L(\theta, \delta(x)) \mid x]\\
+\rho(\delta(x), x) &= E[ w(\theta)(g(\theta) - \delta(x))^2\mid x]\\
+\rho(\delta(x), x) &= E[w(\theta)g(\theta)^2 \mid x] + E[-2w(\theta)g(\theta)\delta(x) \mid x] + E[w(\theta)\delta(x)^2\mid x]\\
+\rho(\delta(x), x) &= E[w(\theta)g(\theta)^2 \mid x] -2\delta(x)E[w(\theta)g(\theta) \mid x] + \delta(x)^2 E[w(\theta)\mid x]\\
+\frac{\partial \rho(\delta(x), x)}{\partial \delta(x)} &= \frac{\partial \left\{ E[w(\theta)g(\theta)^2 \mid x] -2\delta(x)E[w(\theta)g(\theta) \mid x] + \delta(x)^2 E[w(\theta)\mid x] \right\}}{\partial \delta(x)} = 0\\
+\frac{\partial \rho(\delta(x), x)}{\partial \delta(x)} &= -2E[w(\theta)g(\theta) \mid x] + 2\delta(x) E[w(\theta)\mid x] = 0\\
+2\delta(x) E[w(\theta)\mid x] &= 2E[w(\theta)g(\theta) \mid x]\\
+\delta(x) &= \frac{E[w(\theta)g(\theta) \mid x]}{E[w(\theta)\mid x]}
+\end{align*}
+
+# Basic Decision Theory
+For an action rule $a$, the posterior risk can be found using the expression:
+$$r(a) = L(\theta_1, a) \pi(\theta_1) + L(\theta_2, a) \pi(\theta_2)$$
+We can then determine the posterior risk for $A$:
+\begin{align*}
+    r(a_1) &= 0 \cdot \frac{4}{5} + 4 \cdot \frac{1}{5} = \frac{4}{5}\\
+    r(a_2) &= 3 \cdot \frac{4}{5} + 6 \cdot \frac{1}{5} = \frac{18}{5}\\
+    r(a_3) &= 1 \cdot \frac{4}{5} + 0 \cdot \frac{1}{5} = \frac{4}{5}\\
+    r(a_4) &= 3 \cdot \frac{4}{5} + 0 \cdot \frac{1}{5} = \frac{12}{5}\\
+    r(a_5) &= 4 \cdot \frac{4}{5} + 1 \cdot \frac{1}{5} = \frac{17}{5}
+\end{align*}
+As we can see above, $a_1$ and $a_3$ are Bayes actions because they both minimize posterior risk.
