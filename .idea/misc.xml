@@ -50,6 +50,21 @@
             </RMarkdownRenderProfile>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/homeworks/homework-5/kao-austin-homework05.rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/homeworks/homework-5" />
+              <option name="lastOutput" value="$PROJECT_DIR$/homeworks/homework-5/kao-austin-homework05.pdf" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/homeworks/homework-6/template-hw-06.rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/homeworks/homework-6" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/labs/02-intro-to-bayes/lab-02.Rmd">
           <value>
             <RMarkdownRenderProfile>
@@ -68,6 +83,13 @@
           <value>
             <RMarkdownRenderProfile>
               <option name="knitRootDirectory" value="$PROJECT_DIR$/labs/04-intro-gaussian" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/labs/05-intro-rejection-sampling/lab-05.Rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/labs/05-intro-rejection-sampling" />
             </RMarkdownRenderProfile>
           </value>
         </entry>
