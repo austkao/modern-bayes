@@ -58,6 +58,14 @@
             </RMarkdownRenderProfile>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/homeworks/homework-6/kao-austin-homework06.rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/homeworks/homework-6" />
+              <option name="lastOutput" value="$PROJECT_DIR$/homeworks/homework-6/kao-austin-homework06.pdf" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/homeworks/homework-6/template-hw-06.rmd">
           <value>
             <RMarkdownRenderProfile>
