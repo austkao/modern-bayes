@@ -101,6 +101,14 @@
             </RMarkdownRenderProfile>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/labs/07-gibbs/lab-07-partial-solution.Rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/labs/07-gibbs" />
+              <option name="lastOutput" value="$PROJECT_DIR$/labs/07-gibbs/lab-07-partial-solution.pdf" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

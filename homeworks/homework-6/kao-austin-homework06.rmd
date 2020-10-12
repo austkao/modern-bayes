@@ -8,12 +8,12 @@ output:
 font-size: 8px
 ---
 1. Lab Component
-
-Code for tasks 1-3:
 ```{r}
+# Code for tasks 1-3
 knitr::opts_chunk$set(cache=TRUE)
 library(MASS)
-data <- read.csv("data-exponential.csv", header = FALSE)
+data <- read.csv("data/data-exponential.csv", header = FALSE)
+set.seed(12345)
 #######################################
 # This function is a Gibbs sampler
 #
@@ -60,16 +60,12 @@ head(res)
 dim(res)
 res[1,1]
 ```
-
-Task 4:
 ```{r}
-#Plot density estimate of the estimated posterior
-plot(density(res[,1]), xlab = expression(theta),
-     main = expression(paste("Density of ", theta)))
+# Code for task 4
+plot(density(res), xlab = expression(theta),
+     main = expression(paste("Posterior Density")))
 ```
-
-Task 5:
-
+I know that that the estimated posterior in (3) is reliable.
 
 2. Censored Gibbs sampling:
 
@@ -189,13 +185,13 @@ res <- sampleGibbs(z, c, n.iter, init.theta, init.missing, r, a, b)
 
 Below, we see traceplots for 200 iterations of the Gibbs sampler. It is difficult to tell whether or not the sampler has failed to converge, thus, we turn to running average plots.
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Traceplot of theta, 200 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Traceplot of theta, 200 iterations"}
 plot(1:n.iter, res[,1], pch = 16, cex = .35,
      xlab = "Iteration", ylab = expression(theta),
      main = expression(paste("Traceplot of ", theta)))
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Traceplot of $z_3, z_8, z_9, z_{10}, z_{12}$, 200 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Traceplot of $z_3, z_8, z_9, z_{10}, z_{12}$, 200 iterations"}
 missing.index <- c(3,8,9,10,12)
 par(mfrow=c(2,3))
 for (ind in missing.index){
@@ -215,13 +211,13 @@ Below, we see running average plots for 200 iterations of the Gibbs sampler, whe
 run.avg <- apply(res, 2, cumsum)/(1:n.iter)
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Running average plot of theta, 200 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Running average plot of theta, 200 iterations"}
 plot(1:n.iter, run.avg[,1], type = "l",
      xlab = "Iteration", ylab = expression(theta),
      main = expression(paste("Running Average Plot of ", theta)))
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Running average plots of $z_3, z_8, z_9, z_{10}, z_{12}$, 200 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Running average plots of $z_3, z_8, z_9, z_{10}, z_{12}$, 200 iterations"}
 par(mfrow=c(2,3))
 missing.index <- c(3,8,9,10,12)
 for (ind in missing.index){
@@ -238,14 +234,14 @@ Based on this plot, it does not seem that running the Gibbs sampler for 200 iter
 
 The below figures do not provide meaningful inference at this point since the sampler has not been run long enough.
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of theta, 200 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of theta, 200 iterations"}
 # density plots
 plot(density(res[,1]), xlab = expression(theta),
      main = expression(paste("Density of ", theta)))
 abline(v = mean(res[,1]), col = "red")
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of $z_9$ (posterior mean in red), 200 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of $z_9$ (posterior mean in red), 200 iterations"}
 plot(density(res[,4]), xlab = expression(z[9]),
      main = expression(paste("Density of ", z[9])))
 abline(v = mean(res[,4]), col = "red")
@@ -263,13 +259,13 @@ res <- sampleGibbs(z, c, new_iter, init.theta, init.missing, r, a, b)
 Below, we see traceplots for 10000 iterations of the Gibbs sampler.
 There are no noticeable "clumping" of data points that would suggest a problem with the sampler.
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Traceplot of theta, 10000 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Traceplot of theta, 10000 iterations"}
 plot(1:new_iter, res[,1], pch = 16, cex = .35,
      xlab = "Iteration", ylab = expression(theta),
      main = expression(paste("Traceplot of ", theta)))
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Traceplot of $z_3, z_8, z_9, z_{10}, z_{12}.$, 10000 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Traceplot of $z_3, z_8, z_9, z_{10}, z_{12}.$, 10000 iterations"}
 missing.index <- c(3,8,9,10,12)
 par(mfrow=c(2,3))
 for (ind in missing.index){
@@ -288,13 +284,13 @@ Below, we see running average plots for 10000 iterations of the Gibbs sampler, w
 run.avg <- apply(res, 2, cumsum)/(1:new_iter)
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Running average plot of theta, 10000 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Running average plot of theta, 10000 iterations"}
 plot(1:new_iter, run.avg[,1], type = "l",
      xlab = "Iteration", ylab = expression(theta),
      main = expression(paste("Running Average Plot of ", theta)))
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Running average plots of $z_3, z_8, z_9, z_{10}, z_{12}.$, 10000 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Running average plots of $z_3, z_8, z_9, z_{10}, z_{12}.$, 10000 iterations"}
 par(mfrow=c(2,3))
 missing.index <- c(3,8,9,10,12)
 for (ind in missing.index){
@@ -320,14 +316,14 @@ Based on the density of $z_9$, the censored value for the lifetime of patient #9
 most likely lies in the range (2,5), where the majority of the density of patient #9 is. Since the distribution is skewed
 to the right, $z_9$ most likely has a value of about 2.7, where the maximum density value is.
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of theta, 10000 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of theta, 10000 iterations"}
 # density plots
 plot(density(res[,1]), xlab = expression(theta),
      main = expression(paste("Density of ", theta)))
 abline(v = mean(res[,1]), col = "red")
 ```
 
-```{r, echo=FALSE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of $z_9$ (posterior mean in red), 10000 iterations"}
+```{r, echo=TRUE, fig.width=7,fig.height=6,fig.cap="Estimated posterior density of $z_9$ (posterior mean in red), 10000 iterations"}
 plot(density(res[,4]), xlab = expression(z[9]),
      main = expression(paste("Density of ", z[9])))
 abline(v = mean(res[,4]), col = "red")
@@ -346,10 +342,10 @@ b <- 100
 res <- sampleGibbs(z, c, new_iter, init.theta, init.missing, r, a, b)
 # density plots
 plot(density(res[,1]), xlab = expression(theta),
-     main = expression(paste("Density of ", theta)))
+     main = expression(paste("Density of ", theta, ", a = 1, b = 100")))
 abline(v = mean(res[,1]), col = "red")
 plot(density(res[,4]), xlab = expression(z[9]),
-     main = expression(paste("Density of ", z[9])))
+     main = expression(paste("Density of ", z[9],  ", a = 1, b = 100")))
 abline(v = mean(res[,4]), col = "red")
 # Set seed for reproducibility
 set.seed(123)
@@ -361,17 +357,19 @@ b <- 1
 res <- sampleGibbs(z, c, new_iter, init.theta, init.missing, r, a, b)
 # density plots
 plot(density(res[,1]), xlab = expression(theta),
-     main = expression(paste("Density of ", theta)))
+     main = expression(paste("Density of ", theta, ", a = 100, b = 1")))
 abline(v = mean(res[,1]), col = "red")
 plot(density(res[,4]), xlab = expression(z[9]),
-     main = expression(paste("Density of ", z[9])))
+     main = expression(paste("Density of ", z[9], ", a = 100, b = 1")))
 abline(v = mean(res[,4]), col = "red")
 ```
 
 The posterior densities for $\theta \mid \cdots$ and $z_9 \mid \cdots$ do change from part (c), showing that these densities
-are sensitive to large changes in the prior parameters for $a$ and $b$. When $r=1,a=1,b=100$, the density of $\theta$ maintains
-the same shape, but most of the distribution now lies in the range (0.4, 0.8). When $r=1,a=100,b=1$, the density of $\theta$, again,
-maintains the same shape, but most of the distribution now lies in the range (6, 9). When $r=1,a=1,b=100$, the density of
-$z_9$ becomes less skewed to the right than in part (c), and most of the distribution now lies in the range (5, 30).
-When $r=1,a=100,b=1$, the density of $z_9$ becomes more skewed to the right, and most of the distribution now lies
-in the range (2, 3).
+are sensitive to large changes in the prior parameters for $a$ and $b$. Both the mean and variance of these densities
+change drastically. When $r=1,a=1,b=100$, the density of $\theta$ maintains the same shape, but most of the distribution
+now lies in the range (0.4, 0.8) instead of (2.5, 4.3) while the mean shifts from 3.3 to 0.6. When $r=1,a=100,b=1$,
+the density of $\theta$, again, maintains the same shape, but most of the distribution now lies in the range (6, 9).
+When $r=1,a=1,b=100$, the density of $z_9$ becomes less skewed to the right than in part (c),
+and most of the distribution now lies in the range (5, 30) instead of (2,5). The mean also shifts greatly, changing from
+about 3.3 to about 17. When $r=1,a=100,b=1$, the density of $z_9$ becomes more skewed to the right, and most of the
+distribution now lies in the range (2, 3).
