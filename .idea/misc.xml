@@ -73,6 +73,14 @@
             </RMarkdownRenderProfile>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/homeworks/homework-7/kao-austin-homework07.rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/homeworks/homework-7" />
+              <option name="lastOutput" value="$PROJECT_DIR$/homeworks/homework-7/kao-austin-homework07.pdf" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/labs/02-intro-to-bayes/lab-02.Rmd">
           <value>
             <RMarkdownRenderProfile>
