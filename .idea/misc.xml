@@ -81,6 +81,14 @@
             </RMarkdownRenderProfile>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/homeworks/homework-8/kao-austin-homework08.rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/homeworks/homework-8" />
+              <option name="lastOutput" value="$PROJECT_DIR$/homeworks/homework-8/kao-austin-homework08.pdf" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/labs/02-intro-to-bayes/lab-02.Rmd">
           <value>
             <RMarkdownRenderProfile>
@@ -114,6 +122,13 @@
             <RMarkdownRenderProfile>
               <option name="knitRootDirectory" value="$PROJECT_DIR$/labs/07-gibbs" />
               <option name="lastOutput" value="$PROJECT_DIR$/labs/07-gibbs/lab-07-partial-solution.pdf" />
+            </RMarkdownRenderProfile>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/labs/10-linear-regression/11-linear-regression_v2.Rmd">
+          <value>
+            <RMarkdownRenderProfile>
+              <option name="knitRootDirectory" value="$PROJECT_DIR$/labs/10-linear-regression" />
             </RMarkdownRenderProfile>
           </value>
         </entry>
